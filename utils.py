@@ -3,12 +3,12 @@
 # @Author  : nieyuzhou
 # @File    : utils.py
 # @Software: PyCharm
-from sympy import init_printing, lambdify
+import numpy as np
+from sympy import lambdify
+
 from methods import get_gradient, get_Hessan, modified_newton, damped_newton, quasi_newton
 from waston import Watson
 from Discrete_boundary_value import DBV
-import numpy as np
-from IPython.core.interactiveshell import InteractiveShell
 
 
 # 得到原函数、导数、海塞矩阵表达式

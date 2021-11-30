@@ -24,5 +24,5 @@ def DBV(n = 5):
                 (2 * vector_x[i] - vector_x[i - 1] - vector_x[i + 1] + h ** 2 * (
                         vector_x[i] + vector_t[i] + 1) ** 3 / 2) ** 2)
 
-    DBV = sum(vector_r)
-    return DBV, vector_x
+    func = sum(vector_r)
+    return func, vector_x

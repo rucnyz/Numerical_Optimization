@@ -39,9 +39,9 @@ def golden_search(a, b, func, epsilon = 0.001):
         i = i + 1
 
 
-def damped_newton(f, g, G, x0, eps, maxiter = 5000):  # 阻尼牛顿法  x0初始点  eps精确度
+def damped_newton(f, g, h, x0, eps, maxiter = 5000):  # 阻尼牛顿法  x0初始点  eps精确度
     xk = x0
-    gk, Gk = np.array(g(*xk)), G(*xk)
+    gk, Gk = np.array(g(*xk)), h(*xk)
     Gk = np.squeeze(Gk)
     deltas = []
     delta = np.linalg.norm(gk, ord = 2)
@@ -61,15 +61,15 @@ def damped_newton(f, g, G, x0, eps, maxiter = 5000):  # 阻尼牛顿法  x0初�
 
         alpha = golden_search(0, 1, iter_xk)
         xk = xk + alpha * dk
-        gk, Gk = g(*xk), G(*xk)
+        gk, Gk = g(*xk), h(*xk)
         delta = np.linalg.norm(gk, ord = 2)
         deltas.append(delta)
-        if count%100 == 0:
+        if count % 100 == 0:
             print("第{}次迭代  函数值为{:.4f}  delta为{:.4f}".format(count, f(*xk).item(), delta))
         count += 1
     count -= 1
     print("\n运行结束")
-    if (delta > eps):
+    if delta > eps:
         print("迭代{}次未收敛  最终delta为{:.4f}  总耗时为{:.4f}s".format(count, delta, time.time() - start_time))
     else:
         print("成功收敛！    总计迭代次数{}    总耗时为{:.4f}s".format(count, time.time() - start_time))
@@ -77,9 +77,9 @@ def damped_newton(f, g, G, x0, eps, maxiter = 5000):  # 阻尼牛顿法  x0初�
     return deltas
 
 
-def modified_newton(f, g, G, x0, eps, e1 = 0.1, e2 = 0.01, maxiter = 5000):
+def modified_newton(f, g, h, x0, eps, e1 = 0.1, e2 = 0.01, maxiter = 5000):
     xk = x0
-    gk, Gk = np.array(g(*xk)), G(*xk)
+    gk, Gk = np.array(g(*xk)), h(*xk)
     Gk = np.squeeze(Gk)
     # 终止条件
     deltas = []
@@ -94,12 +94,12 @@ def modified_newton(f, g, G, x0, eps, e1 = 0.1, e2 = 0.01, maxiter = 5000):
         except:
             # 奇异情况采用负梯度
             dk = -gk
-        cos = (dk.T @ gk) / (np.linalg.norm(gk, ord = 2) * np.linalg.norm(dk, ord = 2))
+        cosx = (dk.T @ gk) / (np.linalg.norm(gk, ord = 2) * np.linalg.norm(dk, ord = 2))
         # step4
-        if cos > e1:
+        if cosx > e1:
             dk = -dk
         # step5->6
-        if np.abs(cos) < e2:
+        if np.abs(cosx) < e2:
             dk = -gk
 
         # dk = -dk  # 非正定反向（和书上有些区别，是判断的Gk半正定性）
@@ -109,15 +109,15 @@ def modified_newton(f, g, G, x0, eps, e1 = 0.1, e2 = 0.01, maxiter = 5000):
 
         alpha = golden_search(0, 1, iter_xk)
         xk = xk + alpha * dk
-        gk, Gk = np.array(g(*xk)), G(*xk)
+        gk, Gk = np.array(g(*xk)), h(*xk)
         delta = np.linalg.norm(gk, ord = 2)
         deltas.append(delta)
-        if count%100 == 0:
+        if count % 100 == 0:
             print("第{}次迭代  函数值为{:.4f}  delta为{:.4f}".format(count, f(*xk).item(), delta))
         count += 1
     count -= 1
     print("\n运行结束")
-    if (delta > eps):
+    if delta > eps:
         print("迭代{}次未收敛  最终delta为{:.4f}  总耗时为{:.4f}s".format(count, delta, time.time() - start_time))
     else:
         print("成功收敛！    总计迭代次数{}    总耗时为{:.4f}s".format(count, time.time() - start_time))
@@ -165,12 +165,12 @@ def quasi_newton(f, g, x0, eps, maxiter = 5000, method = 'BFGS'):
                     sk @ yk.T @ Hk + Hk @ yk @ sk.T) / (sk.T @ yk)
         delta = np.linalg.norm(gk, ord = 2)
         deltas.append(delta)
-        if count%100 == 0:
+        if count % 100 == 0:
             print("第{}次迭代  函数值为{:.4f}  delta为{:.4f}".format(count, f(*xk).item(), delta))
         count += 1
     count -= 1
     print("\n运行结束")
-    if (delta > eps):
+    if delta > eps:
         print("迭代{}次未收敛  最终delta为{:.4f}  总耗时为{:.4f}s".format(count, delta, time.time() - start_time))
     else:
         print("成功收敛！    总计迭代次数{}    总耗时为{:.4f}s".format(count, time.time() - start_time))

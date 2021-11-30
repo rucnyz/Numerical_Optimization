@@ -21,5 +21,5 @@ def Watson(n = 5):
         vector_r.append((left - right ** 2 - 1) ** 2)
     vector_r.append(vector_x[0] ** 2)  # r30
     vector_r.append((vector_x[1] - vector_x[0] ** 2 - 1) ** 2)  # r31
-    Watson = sum(vector_r)
-    return Watson, vector_x
+    func = sum(vector_r)
+    return func, vector_x

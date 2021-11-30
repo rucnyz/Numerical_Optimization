@@ -10,9 +10,6 @@ from Discrete_boundary_value import DBV
 import numpy as np
 from IPython.core.interactiveshell import InteractiveShell
 
-init_printing(use_latex = True)
-InteractiveShell.ast_node_interactivity = "all"
-
 
 # 得到原函数、导数、海塞矩阵表达式
 def get_fun(fun_name = "Watson", _n = 5):
@@ -26,21 +23,21 @@ def get_fun(fun_name = "Watson", _n = 5):
     return f, g, G
 
 
-def algo_display(f, g, h, x):
+def algo_display(f, g, h, x, eps = 1e-2):
     print("阻尼牛顿法：")
-    x_d = damped_newton(f, g, h, x, eps = 1e-1, maxiter = 5000)
+    x_d = damped_newton(f, g, h, x, eps = eps, maxiter = 5000)
     print("---------------------------------------------------------------")
     print("修正牛顿法：")
-    x_m = modified_newton(f, g, h, x, eps = 1e-1, maxiter = 5000)
+    x_m = modified_newton(f, g, h, x, eps = eps, maxiter = 5000)
     print("---------------------------------------------------------------")
     print("拟牛顿法：SR1")
-    x_S = quasi_newton(f, g, x, eps = 1e-1, maxiter = 5000, method = 'SR1')
+    x_S = quasi_newton(f, g, x, eps = eps, maxiter = 5000, method = 'SR1')
     print("---------------------------------------------------------------")
     print("拟牛顿法：DFP")
-    x_D = quasi_newton(f, g, x, eps = 1e-1, maxiter = 5000, method = 'DFP')
+    x_D = quasi_newton(f, g, x, eps = eps, maxiter = 5000, method = 'DFP')
     print("---------------------------------------------------------------")
     print("拟牛顿法：BFGS")
-    x_B = quasi_newton(f, g, x, eps = 1e-1, maxiter = 5000, method = 'BFGS')
+    x_B = quasi_newton(f, g, x, eps = eps, maxiter = 5000, method = 'BFGS')
     print("---------------------------------------------------------------")
     return x_d, x_m, x_S, x_D, x_B
 

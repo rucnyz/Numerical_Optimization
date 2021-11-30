@@ -18,8 +18,8 @@ def Watson(n = 5):
         right = 0
         for j in range(1, n + 1):
             right = right + vector_x[j - 1] * (vector_t[i] ** (j - 1))
-        vector_r.append(left - right ** 2 - 1)
-    vector_r.append(vector_x[0])  # r30
-    vector_r.append(vector_x[1] - vector_x[0] ** 2 - 1)  # r31
+        vector_r.append((left - right ** 2 - 1) ** 2)
+    vector_r.append(vector_x[0] ** 2)  # r30
+    vector_r.append((vector_x[1] - vector_x[0] ** 2 - 1) ** 2)  # r31
     Watson = sum(vector_r)
     return Watson, vector_x

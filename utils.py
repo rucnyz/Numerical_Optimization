@@ -48,14 +48,15 @@ def algo_display(f, g, h, x):
 if __name__ == '__main__':
     n = 5
     # 正式开始
-    # x0 = np.zeros((n, 1))
-    # fun, grad, Hessan = get_fun("Watson", 5)
-    # print("Watson函数使用各算法对比：\n")
-    # algo_display(fun, grad, Hessan, x0)
+    x0 = np.zeros((n, 1))
+    fun, grad, Hessan = get_fun("Watson", 5)
+    print("Watson函数使用各算法对比：\n")
+    algo_display(fun, grad, Hessan, x0)
 
     # ---------------
 
     x0 = np.array([((i + 1) / (n + 1)) * ((i + 1) / (n + 1) - 1) for i in range(n)])
+    x0 = x0.reshape((n, 1))
     fun, grad, Hessan = get_fun("DBV", 5)
     print("DBV函数使用各算法对比：\n")
     algo_display(fun, grad, Hessan, x0)
